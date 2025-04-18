@@ -26,7 +26,6 @@ public class Task {
         return id;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -41,11 +40,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task {" +
-                "title = '" + title + '\'' +
-                ", description = '" + description + '\'' +
+        return "Задача { " +
+                "название = " + title +
+                ", описание = '" + description +
                 ", id = " + id +
-                ", statusOfTask = " + statusOfTask +
+                ", статус задачи = " + statusOfTask +
                 '}';
     }
 }
