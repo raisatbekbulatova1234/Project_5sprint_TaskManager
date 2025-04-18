@@ -9,12 +9,13 @@ public class TaskManager {
     HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
 
     public ArrayList<Task> getAllTasks() {
+        System.out.println("Вот список всех задач :");
         return new ArrayList<>(taskHashMap.values());
     }
 
     public void deleteAllTasks() {
         taskHashMap.clear();
-        System.out.println("Список задач пуст!");
+        System.out.println("Список задач очищен!");
     }
 
     public Task getTaskById(int id) {
@@ -28,21 +29,20 @@ public class TaskManager {
     }
 
     public void createNewTask(Task task) {
-        Task newTask = new Task(task.getTitle(), task.getDescription());
-        taskHashMap.put(newTask.getId(), newTask);
+        taskHashMap.put(task.getId(), task);
+        System.out.println("Задача успешно создана!");
+
     }
 
     public void updateTask(Task task) {
         taskHashMap.put(task.getId(), task);
+        System.out.println("Задача успешно обновлена!");
+
     }
 
     public void deleteById(int id) {
-
-        for (Integer task : taskHashMap.keySet()) {
-            if (id == task) {
-                taskHashMap.remove(task);
-            }
-        }
+        taskHashMap.remove(id);
+        System.out.println("Задача успешно удалена!");
     }
 }
 

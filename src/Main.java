@@ -1,38 +1,83 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
+        Scanner scanner = new Scanner(System.in);
 
-        //HashMap<Integer, Task> taskHashMap = new HashMap<>();
+        while (true) {
+            System.out.println("Интерфейс приложения: \n" +
+                    "1. Создать новую задачу \n" +
+                    "2. Вывести список всех задач на экран \n" +
+                    "3. Очистить список задач \n" +
+                    "4. Обновить задачу \n" +
+                    "5. Добавить подзадачу \n" +
+                    "6. Получить задачу по идентификатору \n" +
+                    "7. Удалить задачу по идентификатору \n" +
+                    "0. Завершить работу \n");
+            int command = scanner.nextInt();
+            scanner.nextLine();
+            switch (command) {
+                case 0:
+                    System.out.println("Работа приложения завершена. Пока!");
+                    return;
+                case 1:
+                    System.out.println("Введите название задачи :");
+                    String titleTask = scanner.nextLine();
 
-        Task task1 = new Task("Оплатить интернет", "оплатить через личный кабинет 730 руб.");
-        Task task2 = new Task("Оплатить аренду", "перевести хозяйке 9 тыщ");
+                    System.out.println("Введите описание задачи :");
+                    String descriptionTask = scanner.nextLine();
 
-//        taskHashMap.put(task1.getId(), task1);
-//        taskHashMap.put(task2.getId(), task2);
+                    taskManager.createNewTask(new Task(titleTask, descriptionTask));
+                    break;
+                case 2:
+                    for (Task task : taskManager.getAllTasks()) {
+                        System.out.println(task);
+                    }
+                    break;
+                case 3:
+                    taskManager.deleteAllTasks();
+                    System.out.println("Список задач пуст!");
+                    break;
+                case 4:
+                    System.out.println("Введите id задачи, которую хотите обновить:");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
 
-        taskManager.createNewTask(task1);
-        taskManager.createNewTask(task2);
+                    System.out.println("Введите описание задачи :");
+                    String newDescriptionTask = scanner.nextLine();
 
+                    Task task = taskManager.getTaskById(id);
+                    taskManager.updateTask(new Task(task.getTitle(), newDescriptionTask));
+                    break;
+                case 5:
+                    System.out.println("Введите название задачи, для которой добавляем подзадачу :");
+                    int idDesiredTask = scanner.nextInt();
+                    System.out.println("Введите название подзадачи :");
+                    String titleSubtask = scanner.nextLine();
 
-        ArrayList<Task> taskArrayList =  taskManager.getAllTasks();
-        System.out.println(taskArrayList);
+                    System.out.println("Введите описание подзадачи :");
+                    String descriptionSubtask = scanner.nextLine();
 
-        //taskManager.deleteAllTasks(taskManager.taskHashMap);
+                    Task task1 = taskManager.getTaskById(idDesiredTask);
+                    String epicTitle = task1.getTitle();
+                    Subtask subtask = new Subtask(titleSubtask, task1.getDescription(), epicTitle);
+                    taskManager.createNewTask(new Epic(epicTitle, task1.getDescription(), subtask));
+                    break;
+                case 6:
+                    System.out.println("Введите id задачи, которую хотите найти:");
+                    int idTask = scanner.nextInt();
+                    System.out.println(taskManager.getTaskById(idTask));
+                    break;
+                case 7:
+                    System.out.println("Введите id задачи, которую хотите удалить:");
+                    int idTask1 = scanner.nextInt();
+                    taskManager.deleteById(idTask1);
+                    break;
 
-        taskManager.deleteById(task1.getId());
-
-
-        //taskManager.updateTask(new Task("Позвонить маме", "обсудить переезд"));
-
-        //System.out.println(taskManager.getTaskById(task2.getId()));
-
-        ArrayList<Task> taskArrayList1 =  taskManager.getAllTasks();
-        System.out.println(taskArrayList1);
-
+            }
+        }
 
     }
 }
