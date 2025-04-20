@@ -7,16 +7,26 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Интерфейс приложения: \n" +
-                    "1. Создать новую задачу \n" +
-                    "2. Создать новый эпик \n" +
-                    "3. Вывести список всех задач на экран \n" +
-                    "4. Очистить список задач \n" +
-                    "5. Обновить задачу \n" +
-                    "6. Добавить подзадачу \n" +
-                    "7. Получить задачу по идентификатору \n" +
-                    "8. Удалить задачу по идентификатору \n" +
-                    "0. Завершить работу \n");
+            System.out.println("""
+                    С чем вы хотите работать?\s
+                    1. ЗАДАЧИ\s
+                    2. ЭПИКИ\s
+                    3. ПОДЗАДАЧИ\s
+                    """);
+            int entity = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (entity) {
+                case 1:
+                    taskManager.taskMenu();
+                    break;
+                case 2:
+                    taskManager.epicMenu();
+                    break;
+                case 3:
+                    taskManager.subtaskMenu();
+                    break;
+            }
 
             int command = scanner.nextInt();
             scanner.nextLine();
@@ -31,7 +41,7 @@ public class Main {
                     System.out.println("Введите описание задачи :");
                     String descriptionTask = scanner.nextLine();
 
-                    taskManager.createNewTask(new Task(titleTask, descriptionTask));
+                    taskManager.createNewTask(new Task(titleTask, descriptionTask, StatusOfTask.NEW));
                     break;
                 case 2:
                     System.out.println("Введите название эпика :");
@@ -44,10 +54,10 @@ public class Main {
 
                     System.out.println("Введите описание подзадачи :");
                     String descriptionSubtask = scanner.nextLine();
+                    int epicId = taskManager.counterOfTasks++;
 
-                    Subtask subtask = new Subtask(titleSubtask, descriptionSubtask, epicTitle);
-                    //taskManager.subtaskHashMap.put(subtask.getId(), subtask);
-                    taskManager.createNewTask(new Epic(epicTitle, descriptionOfEpic, subtask));
+                    Subtask subtask = new Subtask(titleSubtask, descriptionSubtask, epicId, StatusOfTask.NEW);
+                    taskManager.createNewTask(new Epic(epicTitle, descriptionOfEpic, subtask.getId(), StatusOfTask.NEW));
                     break;
                 case 3:
                     int counter = 1;
@@ -69,7 +79,7 @@ public class Main {
                     String newDescriptionTask = scanner.nextLine();
 
                     Task task = taskManager.getTaskById(id);
-                    taskManager.updateTask(new Task(task.getTitle(), newDescriptionTask));
+                    taskManager.updateTask(new Task(task.getTitle(), newDescriptionTask, StatusOfTask.IN_PROGRESS));
                     break;
                 case 6:
                     System.out.println("Введите id эпика, для которого добавляем подзадачу :");
@@ -80,22 +90,8 @@ public class Main {
 
                     System.out.println("Введите описание подзадачи :");
                     String newDescriptionSubtask = scanner.nextLine();
-                    Subtask subtask1 = new Subtask(newTitleSubtask, newDescriptionSubtask, taskManager.epicHashMap.get(idDesiredTask).getTitle());
+                    Subtask subtask1 = new Subtask(newTitleSubtask, newDescriptionSubtask, idDesiredTask, StatusOfTask.IN_PROGRESS);
 
-                    taskManager.epicHashMap.get(idDesiredTask).subtaskHashMap.put(subtask1.getId(), subtask1);
-
-//                    Task task1 = taskManager.getTaskById(idDesiredTask);
-//                    String epicTitle = task1.getTitle();
-//
-//                    Subtask subtask = new Subtask(titleSubtask, descriptionSubtask, epicTitle);
-//                    taskManager.subtaskHashMap.put(subtask.getId(), subtask);
-//
-//
-//                    Epic epic = new Epic(epicTitle, task1.getDescription(), subtask);
-//                    taskManager.createNewTask(epic);
-//                    taskManager.epicHashMap.put(epic.getId(), epic);
-//
-//                    taskManager.deleteById(idDesiredTask);
                     break;
                 case 7:
                     System.out.println("Введите id задачи, которую хотите найти:");
@@ -105,7 +101,7 @@ public class Main {
                 case 8:
                     System.out.println("Введите id задачи, которую хотите удалить:");
                     int idTask1 = scanner.nextInt();
-                    taskManager.deleteById(idTask1);
+                    taskManager.deleteTaskById(idTask1);
                     break;
 
             }
