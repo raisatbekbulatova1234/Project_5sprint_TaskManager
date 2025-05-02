@@ -6,13 +6,15 @@ public class Task {
     private String description;
     private int id;
     private StatusOfTask statusOfTask;
-    TaskManager taskManager = new TaskManager();
 
     public Task(String title, String description, StatusOfTask status) {
         this.title = title;
         this.description = description;
-        this.id = taskManager.counterOfTasks++;
         statusOfTask = status;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {
