@@ -29,6 +29,10 @@ public class Task {
         return id;
     }
 
+    public StatusOfTask getStatusOfTask() {
+        return statusOfTask;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

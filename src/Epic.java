@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
@@ -20,7 +19,8 @@ public class Epic extends Task {
                 "название = " + super.getTitle() +
                 ", " + "описание = " + super.getDescription() +
                 ", " + "id = " + super.getId() + ", " + '\n' +
-                "подзадачи = " + listSubtask.toString() +
+                "количество подзадач = " + listSubtask.size() +
+                ", статус эпика = " + super.getStatusOfTask() +
                 '}';
     }
 }

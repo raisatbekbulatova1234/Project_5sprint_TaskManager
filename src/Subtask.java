@@ -1,6 +1,6 @@
 public class Subtask extends Task {
 
-   private int epicId;
+    private int epicId;
 
     public Subtask(String title, String description, int epicId, StatusOfTask status) {
         super(title, description, status);
@@ -14,9 +14,10 @@ public class Subtask extends Task {
     @Override
     public String toString() {
         return "Подзадача { " +
-                "название = " + super.getTitle()  +
-                ", описание = " + super.getDescription()  +
-              //  ", статус подзадачи = " + statusOfSubtask +
+                " id = " + super.getId() +
+                " название = " + super.getTitle() +
+                ", описание = " + super.getDescription() +
+                ", статус подзадачи = " + super.getStatusOfTask() +
                 '}';
     }
 }

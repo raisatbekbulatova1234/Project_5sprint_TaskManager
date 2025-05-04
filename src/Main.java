@@ -74,6 +74,7 @@ public class Main {
                 int epicId = taskManager.counterOfTasks++;
                 Subtask subtask = new Subtask(titleSubtask, descriptionSubtask, epicId, StatusOfTask.NEW);
                 subtask.setId(taskManager.counterOfTasks++);
+                taskManager.subtaskHashMap.put(epicId, subtask);
 
                 List<Integer> integerListSubtask = new ArrayList<>();
                 integerListSubtask.add(subtask.getId());
@@ -105,20 +106,27 @@ public class Main {
             case 5:
                 System.out.println("Введите id эпика, для которого добавляем подзадачу :");
                 int idDesiredTask = scanner.nextInt();
-                System.out.println("Введите название подзадачи :");
-                String newTitleSubtask = scanner.nextLine();
-                scanner.nextLine();
+                if (taskManager.epicHashMap.containsKey(idDesiredTask)) {
+                    System.out.println("Введите название подзадачи :");
+                    String newTitleSubtask = scanner.nextLine();
+                    scanner.nextLine();
 
-                System.out.println("Введите описание подзадачи :");
-                String newDescriptionSubtask = scanner.nextLine();
-                Subtask subtask1 = new Subtask(newTitleSubtask, newDescriptionSubtask, idDesiredTask, StatusOfTask.IN_PROGRESS);
-                taskManager.subtaskHashMap.put(subtask1.getId(), subtask1);
-                taskManager.epicHashMap.get(idDesiredTask).getListSubtask().add(subtask1.getId());
-                break;
+                    System.out.println("Введите описание подзадачи :");
+                    String newDescriptionSubtask = scanner.nextLine();
+                    Subtask subtask1 = new Subtask(newTitleSubtask, newDescriptionSubtask, idDesiredTask, StatusOfTask.IN_PROGRESS);
+                    taskManager.subtaskHashMap.put(subtask1.getId(), subtask1);
+                    taskManager.epicHashMap.get(idDesiredTask).getListSubtask().add(subtask1.getId());
+                    taskManager.updateEpicStatus(idDesiredTask);
+                    break;
+                } else {
+                    System.out.println("Такого эпика не существует! Проверь еще раз)");
+                    return;
+                }
+
             case 6:
                 System.out.println("Введите id эпика, который хотите найти:");
                 int idTask = scanner.nextInt();
-                System.out.println(taskManager.getTaskById(idTask));
+                System.out.println(taskManager.getEpicById(idTask));
                 break;
             case 7:
                 System.out.println("Введите id эпика, который хотите удалить:");
@@ -128,9 +136,10 @@ public class Main {
             case 8:
                 System.out.println("Введите id эпика :");
                 int idEpic = scanner.nextInt();
-                ;
-                for (Subtask sub : taskManager.getAllSubtaskFromEpic(idEpic)) {
-                    System.out.println("1. " + sub);
+                if (taskManager.epicHashMap.containsKey(idEpic)) {
+                    taskManager.getAllSubtaskFromEpic(idEpic);
+                } else {
+                    System.out.println("Такого эпика не существует! Проверь еще раз)");
                 }
                 break;
         }
@@ -157,7 +166,7 @@ public class Main {
             case 2:
                 int counter = 1;
                 for (Subtask subtask : taskManager.getAllSubtasks()) {
-                    System.out.println(counter + ". " + subtask);
+                    System.out.println(STR."\{counter}. \{subtask}");
                     counter++;
                 }
                 break;
@@ -176,12 +185,12 @@ public class Main {
                 Subtask subtask = new Subtask(taskManager.subtaskHashMap.get(id).getTitle(), newDescriptionSub, taskManager.subtaskHashMap.get(id).getEpicId(), StatusOfTask.IN_PROGRESS);
                 taskManager.updateSubtask(subtask);
                 break;
-            case 6:
-                System.out.println("Введите id эпика, который хотите найти:");
+            case 5:
+                System.out.println("Введите id подзадачи, которую хотите найти:");
                 int idTask = scanner.nextInt();
-                System.out.println(taskManager.getEpicById(idTask));
+                System.out.println(taskManager.getSubtaskById(idTask));
                 break;
-            case 7:
+            case 6:
                 System.out.println("Введите id подзадачи, который хотите удалить:");
                 int idTask1 = scanner.nextInt();
                 taskManager.epicHashMap.get(taskManager.subtaskHashMap.get(idTask1).getEpicId()).getListSubtask().remove(idTask1);
