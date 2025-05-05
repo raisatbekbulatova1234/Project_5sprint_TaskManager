@@ -33,6 +33,10 @@ public class Task {
         return statusOfTask;
     }
 
+    public void setStatusOfTask(StatusOfTask statusOfTask) {
+        this.statusOfTask = statusOfTask;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

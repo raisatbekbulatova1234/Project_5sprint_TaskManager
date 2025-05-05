@@ -1,13 +1,33 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TaskManager {
-    public int counterOfTasks = 1;
+    private int counterOfTasks = 0;
 
-    HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-    HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
+    private HashMap<Integer, Task> taskHashMap = new HashMap<>();
+    private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
+    private HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
+
+
+    public void setCounterOfTasks() {
+        this.counterOfTasks++;
+    }
+
+    public HashMap<Integer, Epic> getEpicHashMap() {
+        return epicHashMap;
+    }
+
+    public HashMap<Integer, Task> getTaskHashMap() {
+        return taskHashMap;
+    }
+
+    public HashMap<Integer, Subtask> getSubtaskHashMap() {
+        return subtaskHashMap;
+    }
+
+    public int getCounterOfTasks() {
+        return counterOfTasks;
+    }
 
     public ArrayList<Task> getAllTasks() {
         System.out.println("Вот список всех задач :");
@@ -36,9 +56,9 @@ public class TaskManager {
     public void deleteAllSubtasks() {
         for (Epic epic : epicHashMap.values()) {
             //updateEpic(new Epic(epic.getTitle(), epic.getDescription(), epic.getListSubtask(), StatusOfTask.DONE));
-            subtaskHashMap.clear();
             epic.getListSubtask().clear();
             updateEpicStatus(epic.getId());
+            subtaskHashMap.clear();
         }
     }
 
@@ -124,39 +144,46 @@ public class TaskManager {
         int epicId = subtaskHashMap.get(id).getEpicId();
         Epic epic = epicHashMap.get(epicId);
         epic.getListSubtask().remove(id);
-        //updateEpic(new Epic(epic.getTitle(), epic.getDescription(), epic.getListSubtask(), StatusOfTask.IN_PROGRESS));
         updateEpicStatus(epicId);
         subtaskHashMap.remove(id);
 
     }
 
-    public void getAllSubtaskFromEpic(int epicId) {
-        System.out.println("Вот список всех позадач Эпика '" + epicHashMap.get(epicId).getTitle() + "' : \n");
+    public ArrayList<Subtask> getAllSubtaskFromEpic(int epicId) {
+        ArrayList<Subtask> subtasks = new ArrayList<>();
         for (Integer id : epicHashMap.get(epicId).getListSubtask()) {
-           Subtask subtask = subtaskHashMap.get(id);
-            System.out.println(subtask);
+            Subtask subtask = subtaskHashMap.get(id);
+            subtasks.add(subtask);
         }
+        return subtasks;
     }
 
     public void updateEpicStatus(int epicId) {
+        int counterNew = 0;
+        int counterDone = 0;
         if (epicHashMap.containsKey(epicId)) {
             Epic epic = epicHashMap.get(epicId);
-            for (Integer id : epic.getListSubtask()) {
-                for (Subtask subtask : subtaskHashMap.values()) {
-                    if ((subtask.getId() == id) && subtask.getStatusOfTask().equals(StatusOfTask.DONE)) {
-                        updateEpic(new Epic(epic.getTitle(), epic.getDescription(), epic.getListSubtask(), StatusOfTask.DONE));
+            for (Subtask subtask : subtaskHashMap.values()) {
+                if (subtask.getStatusOfTask().equals(StatusOfTask.DONE)) {
+                    counterDone++;
+                } else if (subtask.getStatusOfTask().equals(StatusOfTask.NEW)) {
+                    counterNew++;
+                } else
+                    break;
 
-                    } else if ((subtask.getStatusOfTask().equals(StatusOfTask.NEW) || epic.getListSubtask().isEmpty())) {
-                        updateEpic(new Epic(epic.getTitle(), epic.getDescription(), epic.getListSubtask(), StatusOfTask.NEW));
-
-                    } else
-                        updateEpic(new Epic(epic.getTitle(), epic.getDescription(), epic.getListSubtask(), StatusOfTask.IN_PROGRESS));
-
+                if (counterNew == epic.getListSubtask().size()) {
+                    epic.setStatusOfTask(StatusOfTask.NEW);
                 }
+                if (counterDone == epic.getListSubtask().size() || epic.getListSubtask().isEmpty()) {
+                    epic.setStatusOfTask(StatusOfTask.DONE);
+
+                } else
+                    epic.setStatusOfTask(StatusOfTask.IN_PROGRESS);
 
             }
         }
     }
-
 }
+
+
 
