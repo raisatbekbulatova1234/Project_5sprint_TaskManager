@@ -71,14 +71,14 @@ public class Main {
 
                 System.out.println("Введите описание подзадачи :");
                 String descriptionSubtask = scanner.nextLine();
-                taskManager.setCounterOfTasks();
+                //taskManager.setCounterOfTasks();
                 int epicId = taskManager.getCounterOfTasks();
                 Subtask subtask = new Subtask(titleSubtask, descriptionSubtask, epicId, StatusOfTask.NEW);
                 taskManager.setCounterOfTasks();
                 subtask.setId(taskManager.getCounterOfTasks());
-                taskManager.getSubtaskHashMap().put(epicId, subtask);
+                taskManager.getSubtaskHashMap().put(subtask.getId(), subtask);
 
-                List<Integer> integerListSubtask = new ArrayList<>();
+                ArrayList<Integer> integerListSubtask = new ArrayList<>();
                 integerListSubtask.add(subtask.getId());
                 taskManager.createNewEpic(new Epic(epicTitle, descriptionOfEpic, integerListSubtask, StatusOfTask.NEW));
                 break;
@@ -100,7 +100,7 @@ public class Main {
 
                 System.out.println("Введите описание эпика :");
                 String newDescriptionTask = scanner.nextLine();
-                List<Integer> integerList = taskManager.getEpicHashMap().get(id).getListSubtask();
+                ArrayList<Integer> integerList = taskManager.getEpicHashMap().get(id).getListSubtask();
 
                 Epic epic = new Epic(taskManager.getEpicHashMap().get(id).getTitle(), newDescriptionTask, integerList, StatusOfTask.IN_PROGRESS);
                 taskManager.updateEpic(epic);
@@ -194,16 +194,22 @@ public class Main {
             case 5:
                 System.out.println("Введите id подзадачи, которую хотите найти:");
                 int idTask = scanner.nextInt();
-                System.out.println(taskManager.getSubtaskById(idTask));
-                break;
+                if (taskManager.getSubtaskHashMap().containsKey(idTask)) {
+                    System.out.println(taskManager.getSubtaskById(idTask));
+                    break;
+                } else {
+                    System.out.println("Такой подзадачи не существует! Проверь еще раз)");
+                }
             case 6:
                 System.out.println("Введите id подзадачи, который хотите удалить:");
                 int idTask1 = scanner.nextInt();
-                taskManager.getEpicHashMap().get(taskManager.getSubtaskHashMap().get(idTask1).getEpicId()).getListSubtask().remove(idTask1);
-                taskManager.deleteSubtaskById(idTask1);
-                int idEpic = taskManager.getSubtaskHashMap().get(idTask1).getEpicId();
-                taskManager.updateEpicStatus(idEpic);
-                break;
+
+                if (taskManager.getSubtaskHashMap().containsKey(idTask1)) {
+                    taskManager.deleteSubtaskById(idTask1);
+                    break;
+                } else {
+                    System.out.println("Такой подзадачи не существует! Проверь еще раз)");
+                }
         }
     }
 
@@ -225,14 +231,7 @@ public class Main {
             switch (entity) {
                 case 1:
                     while (t) {
-                        System.out.println("Интерфейс приложения: \n" +
-                                "1. Создать новую задачу \n" +
-                                "2. Вывести список всех задач на экран \n" +
-                                "3. Очистить список задач \n" +
-                                "4. Обновить задачу \n" +
-                                "5. Получить задачу по идентификатору \n" +
-                                "6. Удалить задачу по идентификатору \n" +
-                                "0. Выйти в основное меню \n");
+                        System.out.println("Интерфейс приложения: \n" + "1. Создать новую задачу \n" + "2. Вывести список всех задач на экран \n" + "3. Очистить список задач \n" + "4. Обновить задачу \n" + "5. Получить задачу по идентификатору \n" + "6. Удалить задачу по идентификатору \n" + "0. Выйти в основное меню \n");
 
                         int commandTask = scanner.nextInt();
                         scanner.nextLine();
@@ -243,16 +242,7 @@ public class Main {
 
                 case 2:
                     while (true) {
-                        System.out.println("Интерфейс приложения: \n" +
-                                "1. Создать новый эпик \n" +
-                                "2. Вывести список всех эпиков на экран \n" +
-                                "3. Очистить список эпиков \n" +
-                                "4. Обновить эпик \n" +
-                                "5. Добавить подзадачу \n" +
-                                "6. Получить эпик по идентификатору \n" +
-                                "7. Удалить эпик по идентификатору \n" +
-                                "8. Получить список всех подзадач \n" +
-                                "0. Завершить работу \n");
+                        System.out.println("Интерфейс приложения: \n" + "1. Создать новый эпик \n" + "2. Вывести список всех эпиков на экран \n" + "3. Очистить список эпиков \n" + "4. Обновить эпик \n" + "5. Добавить подзадачу \n" + "6. Получить эпик по идентификатору \n" + "7. Удалить эпик по идентификатору \n" + "8. Получить список всех подзадач \n" + "0. Завершить работу \n");
                         int commandEpic = scanner.nextInt();
                         scanner.nextLine();
                         epicApp(commandEpic);
@@ -261,14 +251,7 @@ public class Main {
                     break;
                 case 3:
                     while (true) {
-                        System.out.println("Интерфейс приложения: \n" +
-                                "1. Создать новую подзадачу \n" +
-                                "2. Вывести список всех подзадач на экран \n" +
-                                "3. Очистить список подзадач \n" +
-                                "4. Обновить подзадачу \n" +
-                                "5. Получить подзадачу по идентификатору \n" +
-                                "6. Удалить подзадачу по идентификатору \n" +
-                                "0. Завершить работу \n");
+                        System.out.println("Интерфейс приложения: \n" + "1. Создать новую подзадачу \n" + "2. Вывести список всех подзадач на экран \n" + "3. Очистить список подзадач \n" + "4. Обновить подзадачу \n" + "5. Получить подзадачу по идентификатору \n" + "6. Удалить подзадачу по идентификатору \n" + "0. Завершить работу \n");
                         int commandSubtask = scanner.nextInt();
                         scanner.nextLine();
                         subtaskApp(commandSubtask);
