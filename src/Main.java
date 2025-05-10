@@ -1,9 +1,8 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    static TaskManager taskManager = new TaskManager();
+    static TaskManager taskManager = new InMemoryTaskManager();
     static Scanner scanner = new Scanner(System.in);
 
     private static void taskApp(int commandTask) {
