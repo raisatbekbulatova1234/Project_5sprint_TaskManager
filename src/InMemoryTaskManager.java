@@ -1,14 +1,15 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TaskManager{
     private int counterOfTasks = 0;
 
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
 
-    private ArrayList<Task> viewedTasks = new ArrayList<>();
+  HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
+  TaskManager taskManager = new Managers().getDefault();
 
     @Override
     public void setCounterOfTasks() {
@@ -75,19 +76,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        counterOfCallTasks(taskHashMap.get(id));
+        inMemoryHistoryManager.addTask(taskHashMap.get(id));
         return taskHashMap.getOrDefault(id, null);
     }
 
     @Override
     public Task getEpicById(int id) {
-        counterOfCallTasks(epicHashMap.get(id));
+        inMemoryHistoryManager.addTask(epicHashMap.get(id));
         return epicHashMap.getOrDefault(id, null);
     }
 
     @Override
     public Task getSubtaskById(int id) {
-        counterOfCallTasks(subtaskHashMap.get(id));
+        inMemoryHistoryManager.addTask(subtaskHashMap.get(id));
         return subtaskHashMap.getOrDefault(id, null);
     }
 
@@ -215,17 +216,9 @@ public class InMemoryTaskManager implements TaskManager {
             }
     }
 
-    public void counterOfCallTasks(Task task) {
-        if (viewedTasks.size() >= 10) {
-            viewedTasks.removeFirst();
-            viewedTasks.add(task);
-        } else
-            viewedTasks.add(task);
-    }
-
     @Override
     public ArrayList<Task> getHistory() {
-        return viewedTasks;
+        return inMemoryHistoryManager.getHistory();
     }
 }
 

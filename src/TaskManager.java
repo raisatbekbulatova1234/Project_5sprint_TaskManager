@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface TaskManager {
+
     void setCounterOfTasks();
 
     HashMap<Integer, Epic> getEpicHashMap();
@@ -52,7 +53,7 @@ public interface TaskManager {
 
     void updateEpicStatus(int epicId);
 
-    void counterOfCallTasks(Task task);
+    //void counterOfCallTasks(Task task);
 
     ArrayList<Task> getHistory();
 }
