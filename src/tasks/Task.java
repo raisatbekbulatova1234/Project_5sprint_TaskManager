@@ -1,3 +1,6 @@
+package tasks;
+import enums.StatusOfTask;
+
 import java.util.Objects;
 
 public class Task {
@@ -41,7 +44,7 @@ public class Task {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(title, task.title);
+        return id == task.id;
     }
 
     @Override

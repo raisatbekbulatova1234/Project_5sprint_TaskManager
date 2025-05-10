@@ -1,19 +1,25 @@
+package managers;
+
+import enums.StatusOfTask;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
     private int counterOfTasks = 0;
 
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
     private HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
 
-  HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
-  TaskManager taskManager = new Managers().getDefault();
+    private final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
     @Override
     public void setCounterOfTasks() {
-        this.counterOfTasks++;
+        counterOfTasks++;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public ArrayList<Subtask> getAllSubtasks() {
-        System.out.println("Вот список всех позадач :");
+        System.out.println("Вот список всех подзадач :");
         return new ArrayList<>(subtaskHashMap.values());
     }
 
@@ -129,8 +135,8 @@ public class InMemoryTaskManager implements TaskManager{
     public void updateEpic(Epic epic) {
         if (epicHashMap.containsKey(epic.getId())) {
             epicHashMap.put(epic.getId(), epic);
+        } else {
             System.out.println("Такого эпика не существует! Проверь еще раз)");
-
         }
     }
 

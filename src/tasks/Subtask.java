@@ -1,3 +1,7 @@
+package tasks;
+
+import enums.StatusOfTask;
+
 public class Subtask extends Task {
 
     private int epicId;
@@ -7,8 +11,18 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
+    @Override
+    public int getId() {
+        if (super.getId() == epicId) {
+            System.out.println("Ошибка! Epic нельзя добавить в самого себя в виде подзадачи!!!");
+            return -1;
+        } else {
+            return super.getId();
+        }
+    }
+
     public int getEpicId() {
-        return epicId;
+            return epicId;
     }
 
     @Override

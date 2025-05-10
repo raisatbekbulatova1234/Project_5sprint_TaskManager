@@ -1,3 +1,8 @@
+import enums.StatusOfTask;
+import managers.InMemoryTaskManager;
+import managers.TaskManager;
+import tasks.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -70,7 +75,6 @@ public class Main {
 
                 System.out.println("Введите описание подзадачи :");
                 String descriptionSubtask = scanner.nextLine();
-                //taskManager.setCounterOfTasks();
                 int epicId = taskManager.getCounterOfTasks();
                 Subtask subtask = new Subtask(titleSubtask, descriptionSubtask, epicId, StatusOfTask.NEW);
                 taskManager.setCounterOfTasks();
